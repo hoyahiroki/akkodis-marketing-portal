@@ -1,19 +1,19 @@
 # assets — ページ分析の原本スクリーンショット
 
-SharePoint「ページ分析」ダイアログの元スクリーンショット（PNG）を格納する場所です。
-画像は GitHub Web UI から直接アップロードしてください（貼り付け画像はファイル化されない
-ため、リポジトリへは Web UI ドラッグ&ドロップ or 通常の git add で追加します）。
+SharePoint「ページ分析」および各ページ画面の元スクリーンショット（PNG）を格納しています。
 
-## 推奨ファイル名
+## 命名規則
 
-`summary.md` / `page-analytics.csv` の仮ラベルと対応させると管理しやすいです。
+`<ページ名>_<種別>.png`
 
-```
-page-1.png
-page-2.png
-page-3.png
-page-4.png
-page-5.png
-```
+- 種別 `ana` … ページ分析ダイアログ（`summary.md` / `page-analytics.csv` の数値の出典）
+- 種別 `pc`  … PC 表示のページ
+- 種別 `sp`  … スマートフォン表示のページ
 
-ページ名が判明している場合は `page-analytics/README.md` の対応表に実名を記入してください。
+| ページ | 分析 | PC | スマホ |
+|--------|------|----|--------|
+| top       | top_ana.png       | top_pc.png       | top_sp.png       |
+| partner   | partner_ana.png   | partner_pc.png   | partner_sp.png   |
+| brand     | brand_ana.png     | brand_pc.png     | brand_sp.png     |
+| client    | client_ana.png    | client_pc.png    | client_sp.png    |
+| candidate | candidate_ana.png | candidate_pc.png | candidate_sp.png |

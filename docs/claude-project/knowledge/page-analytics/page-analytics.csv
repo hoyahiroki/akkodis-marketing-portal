@@ -1,6 +1,6 @@
-page_id,snapshot_date,period,unique_viewers_30d,unique_viewers_change_pct,unique_viewers_alltime,total_views_30d,total_views_change_pct,total_views_alltime,avg_time_per_user_sec,avg_time_change_pct,hourly_traffic_legend_max,hourly_traffic_note
-page-1,2026-07-15,last_30_days,218,18,2.7K,403,23,15K,50,61,7,"平日 8-16 時に集中、金曜 10-11 時が最濃"
-page-2,2026-07-15,last_30_days,12,140,141,16,129,307,25,-70,0,"期間中トラフィックほぼ無し"
-page-3,2026-07-15,last_30_days,319,9,834,662,12,2.5K,102,-2,8,"平日 8-16 時が濃い、金曜 10 時付近が最濃"
-page-4,2026-07-15,last_30_days,44,-14,876,87,13,3.7K,80,23,1,"平日 8-16 時に薄く分布"
-page-5,2026-07-15,last_30_days,18,-5,418,24,14,815,22,69,1,"ほぼ 0、まれに平日日中"
+page_id,snapshot_date,period,unique_viewers_30d,unique_viewers_change_pct,unique_viewers_alltime,total_views_30d,total_views_change_pct,total_views_alltime,avg_time_per_user_sec,avg_time_change_pct,hourly_traffic_legend_max,hourly_traffic_note,analytics_screenshot,pc_screenshot,sp_screenshot
+top,2026-07-15,last_30_days,218,18,2.7K,403,23,15K,50,61,7,"平日 8-16 時に集中、金曜 10-11 時が最濃",assets/top_ana.png,assets/top_pc.png,assets/top_sp.png
+partner,2026-07-15,last_30_days,12,140,141,16,129,307,25,-70,0,"期間中トラフィックほぼ無し",assets/partner_ana.png,assets/partner_pc.png,assets/partner_sp.png
+brand,2026-07-15,last_30_days,319,9,834,662,12,2.5K,102,-2,8,"平日 8-16 時が濃い、金曜 10 時付近が最濃",assets/brand_ana.png,assets/brand_pc.png,assets/brand_sp.png
+client,2026-07-15,last_30_days,44,-14,876,87,13,3.7K,80,23,1,"平日 8-16 時に薄く分布",assets/client_ana.png,assets/client_pc.png,assets/client_sp.png
+candidate,2026-07-15,last_30_days,18,-5,418,24,14,815,22,69,1,"ほぼ 0、まれに平日日中",assets/candidate_ana.png,assets/candidate_pc.png,assets/candidate_sp.png
