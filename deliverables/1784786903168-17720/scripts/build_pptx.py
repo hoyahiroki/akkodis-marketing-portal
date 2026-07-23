@@ -349,14 +349,14 @@ def slide_exec_summary():
 # ===========================================================================
 def compare_slide(title, subtitle, badge, asis_rows, tobe_images, legend_items, points, legend_title="AsIs 該当箇所",
                    asis_col_title="AsIs（現状）", tobe_col_title="ToBe（改善後）", points_height=Inches(1.05),
-                   legend_height=Inches(0.95)):
+                   legend_height=Inches(0.95), points_size=9.3):
     s = new_slide()
     title_bar(s, title, subtitle, badge=badge)
     column_label(s, LEFT_X, asis_col_title, RED)
     column_label(s, RIGHT_X, tobe_col_title, BLUE)
 
     img_top = COL_TOP + Inches(0.40)
-    points_top = points_block(s, points, height=points_height)
+    points_top = points_block(s, points, height=points_height, size=points_size)
     content_bottom = points_top - Inches(0.1)
 
     left_img_h = content_bottom - img_top - legend_height - Inches(0.08)
@@ -381,9 +381,9 @@ def slide_top():
         ("④", False, "T-1（SP）　モバイルでは極小枠＋横スクロールで数値が読めない"),
     ]
     points = [
-        "T-3：カードに説明文がなく次に何ができるか伝わらない → クイックリンクに1行説明を追加 → クリック前に目的地が分かり誤クリック・迷いが減る",
-        "T-4：業務依頼フォームとブランドレビュー手順の使い分けが1画面で判別しづらい → 「よく使う窓口」セクションで2入口を並置し使い分けテキストを添える → 依頼者が正しい窓口へ一発到達",
-        "T-1：埋め込みダッシュボードがSPで極小枠＋横スクロールとなり判読不能 → SP表示のみ要約表示に切替 → モバイル利用者にも指標が届く",
+        "T-3：カードに説明文がなく次に何ができるか伝わらない → クイックリンクに1行説明を追加 → 誤クリック・迷いの軽減が期待される",
+        "T-4：業務依頼フォームとブランドレビュー手順の使い分けが1画面で判別しづらい → 「よく使う窓口」セクションで2入口を並置し使い分けテキストを添える → 依頼者が正しい窓口へ到達しやすくなることが期待される",
+        "T-1：埋め込みダッシュボードがSPで極小枠＋横スクロールとなり判読不能 → 端末別の表示切替の可否はF0/PoCで検証。確実なL1案としてPC/SP共通で主要指標のテキスト要約＋詳細レポートへのリンクを表示 → モバイル利用者にも指標が届きやすくなることが期待される",
         "T-2：組織体制が最下部に沈み情報の優先順位が弱い → ページ内目次にアンカーを追加 → スクロールなしで直接到達可能に",
     ]
     compare_slide(
@@ -391,7 +391,7 @@ def slide_top():
         [([(f"{ASSETS}/asis_top_pc.png", "top_pc.png（①②③）"),
            (f"{ASSETS}/asis_top_sp_dashboard.png", "top_sp.png 抜粋（④）")], 1)],
         [(f"{ASSETS}/tobe_top.png", "")],
-        legend, points, points_height=Inches(1.35),
+        legend, points, points_height=Inches(1.95), points_size=8.4,
     )
 
 
@@ -405,11 +405,11 @@ def slide_brand_1():
         ("②", False, "B-5　ラベルがなく何をするカードか分からない"),
     ]
     points = [
-        "B-1（最重要）：1ページに全情報を積層しページ内ナビが皆無、目的の情報に辿り着けない → 7項目のページ内目次を冒頭に新設 → 直近30日で最多利用（319名）のページの到達性が改善し効果が最も広く届く",
-        "B-2（最重要）：ガイドライン約10本が粒度・目的バラバラにフラット列挙 → 目的軸4カテゴリのドキュメントライブラリ＋メタデータ列で束ね直す → 目的の資料への選択時間が短縮",
+        "B-1（最重要）：1ページに全情報を積層しページ内ナビが皆無、目的の情報に辿り着けない → 7項目（案・棚卸し後に確定）のページ内目次を冒頭に新設 → 直近30日で最多利用（319名）のページの到達性が改善し効果が最も広く届く",
+        "B-2（重要）：ガイドライン約10本が粒度・目的バラバラにフラット列挙 → 目的軸4カテゴリ（案・棚卸し後に確定）のドキュメントライブラリ＋メタデータ列で束ね直す → 目的の資料への選択時間の短縮が期待される",
     ]
     compare_slide(
-        "② ブランドライブラリ（1/2）", "対象課題：B-1（最重要）／B-2（最重要）／B-6／B-5　※直近30日 最多閲覧ページ（319名）", "brand_pc（最重要）",
+        "② ブランドライブラリ（1/2）", "対象課題：B-1（最重要）／B-2／B-6／B-5　※直近30日 最多閲覧ページ（319名）", "brand_pc（最重要）",
         [([(f"{ASSETS}/asis_brand_thumbnail.png", "全体縮尺（B-1）"),
            (f"{ASSETS}/asis_brand_A.png", "Crop A（①②）")], 1)],
         [(f"{ASSETS}/tobe_brand_1.png", "")],
@@ -428,7 +428,7 @@ def slide_brand_2():
         "B-5：ラベルのない3枚のアイコンカードでアフォーダンスが不明 → クイックリンクにラベルテキストを追加 → クリック前に用途が分かる",
         "B-6：冒頭見出しの黄色マーカーが帯見出しと二重表現で体裁が粗い → 帯見出し1種類に統一 → 視覚的な一貫性が向上",
         "B-3：ロゴ掲載フローがフォーム→Teams→Salesforceを跨ぐ6ステップを長文で説明 → 番号付き手順＋関連テンプレ直リンクに整理 → 手続きの実行負荷を軽減（自動化は将来のL2拡張）",
-        "B-7：モバイルは各セクションを折りたたみ表示にし、目次からのアンカー遷移を主動線にすることで長尺化を体感上緩和",
+        "B-7：SP版が極端に長尺（PC 8,203px／SP 12,196px） → 目次・アンカー中心の導線＋目的別セクション再編／ページ分割を軸に整理。折りたたみUIの採否はF0で確認 → モバイルでの回遊性向上が期待される",
     ]
     compare_slide(
         "② ブランドライブラリ（2/2）", "対象課題：B-2／B-3／B-4／B-5／B-6／B-7", "brand_pc（最重要）",
@@ -472,7 +472,7 @@ def slide_candidate():
         ("②", True, "CA-2（Good）3セクションのみで簡潔・他ページの参照モデル"),
     ]
     points = [
-        "CA-1（最重要）：マスター資料が「各チームに直接連絡」で完結し資料が入手できない → ドキュメントライブラリへの直リンク＋クイックリンクに置換、連絡先はメタデータとして保持 → 「見つからずメール検索」を誘発する典型例を最短コストで即時解消（クイックウィン）",
+        "CA-1（最重要）：マスター資料が「各チームに直接連絡」で完結し資料が入手できない → ドキュメントライブラリへの直リンク＋クイックリンクに置換、連絡先はメタデータとして保持 → 「見つからずメール検索」を誘発する典型例を短期間で改善（追加ライセンス費ゼロ想定。既存資料・権限・保管場所の確認を着手条件とする／クイックウィン）",
         "CA-2：ページ構成自体は簡潔で見やすい → 3セクション構成をそのまま維持し他ページ改善の目標形にする → 情報量の少なさではなく「構造の分かりやすさ」を他ページ（特にブランドライブラリ）へ横展開する参照モデルとして活用",
     ]
     s = new_slide()
@@ -494,7 +494,7 @@ def slide_candidate():
     note_top = img_top + tobe_img_h + Inches(0.08)
     add_rect(s, RIGHT_X, note_top, RIGHT_W, note_h, fill=RGBColor(0xE9, 0xF3, 0xE9), line_color=RGBColor(0x3a, 0x7d, 0x3a), line_w=1.0)
     add_text(s, RIGHT_X + Inches(0.12), note_top + Inches(0.07), RIGHT_W - Inches(0.24), note_h - Inches(0.14),
-              "クイックウィン：L1（既存パーツ）・費用ゼロで即着手可能。docs/02 §5・§8の最優先クイックウィンに一致。",
+              "クイックウィン：L1（既存パーツ）・追加ライセンス費ゼロ想定。既存資料・権限・保管場所の確認を着手条件に着手可能。docs/02 §5・§8の最優先クイックウィンに一致。",
               size=9.3, bold=True, color=RGBColor(0x2e, 0x63, 0x2e), line_spacing=1.1)
     footer(s, "④ キャンディデート向け")
 
@@ -504,11 +504,11 @@ def slide_candidate():
 # ===========================================================================
 def slide_partner():
     legend = [
-        ("①", False, "P-1　ASPチームだけ画像が読み込まれず体裁が崩れる"),
+        ("①", False, "P-1　Akkodis ASP Teamだけ余分な画像枠が表示（原因は要現物確認）"),
         ("②", False, "P-2　長尺スクロールなのにページ内ジャンプがない"),
     ]
     points = [
-        "P-1：Akkodis ASP Teamのみ画像枠が破綻し体裁が揃わない → 現物確認の上、画像差し替えまたは枠削除で他2チームと構造を統一 → 3パートナーの見え方の一貫性を回復（低コスト・クイックウィン）",
+        "P-1：Akkodis ASP Teamだけ余分な画像枠が表示され体裁が揃わない（原因は要現物確認） → 差し替えor削除は現物確認後に決定し、他2チームと構造をそろえる → 3パートナーの見え方の一貫性向上が期待される（低コスト・クイックウィン）",
         "P-2：長尺ページなのにページ内ナビがなくクライアントページのアンカー導線と不統一 → 3パートナーへのページ内目次を新設 → 目的パートナーへの直接到達が可能に（G-1是正の一環）",
     ]
     compare_slide(
@@ -552,7 +552,7 @@ def slide_cross():
     ry = gy + Emu(int(row_pitch) * 2) + Inches(0.06)
     add_text(s, Inches(0.35), ry, Inches(6), Inches(0.24), "ToBe：全ページ共通テンプレート化（§6-2）", size=11, bold=True, color=NAVY)
     tobe_items = [
-        "[検索ボックス web part]（G-2対応の核）：全ページヘッダー直下・共通位置に常設。Microsoft Search＋[ハイライトされたコンテンツ web part]の動的クエリを組合せ。高度ファセットはL2/L3のため将来拡張",
+        "[検索ボックス web part]（G-2対応の核）：全ページヘッダー直下・共通位置に常設。Microsoft Search＋[ハイライトされたコンテンツ web part]の動的クエリを組合せ。高度ファセットはL3（PnP採用時）／標準リファイナーはL1範囲をF0で確認",
         "[ページ内リンク／セクションアンカー web part]（G-1対応）：全ページ冒頭にページ内目次を置くフォーマットを統一",
         "帯見出しのビジュアル統一（G-1／B-6共通）：黄色帯＋黄色マーカーの二重表現をやめ帯見出し1種類に統一",
         "「窓口案内」の共通化（G-3対応）：業務依頼フォーム／ブランドレビュー手順／各チーム連絡先を共通フォーマットのクイックリンクブロックとして各ページ末尾または目次に集約表示",
@@ -561,7 +561,7 @@ def slide_cross():
     add_multirun_bullet(s, Inches(0.35), ry + Inches(0.28), Inches(12.6), Inches(1.6), tobe_items, size=9.2, gap_pt=3)
 
     points = [
-        "G-2（最重要）：標準検索はあるがページ内の絞り込み・ファセットがなく「見つからない→メール検索」の核心原因 → 全ページ共通位置に検索ボックス＋ハイライトされたコンテンツを設置 → 発見性の底上げ。将来的にファセット（L3）・AIアシスタント（L2）へ段階拡張",
+        "G-2（最重要）：標準検索はあるがページ内の絞り込み・ファセットがなく「見つからない→メール検索」の核心原因 → 検索入口と対象の整理＋メタデータ整備による基礎改善（全ページ共通位置に検索ボックス＋ハイライトされたコンテンツを設置） → 発見性の底上げが期待される。高度な絞り込み（ファセット）は標準リファイナー（一部L1）／PnP Modern Search（L3）で段階拡張",
         "G-1：ページ間で構成（アンカー有無・装飾・密度）が不統一で回遊のたび探し方を学び直す必要がある → ページ内目次・帯見出しを全ページ共通テンプレート化 → 一貫した探索体験",
         "G-3：窓口・相談導線が各所に分散 → 共通フォーマットの窓口案内ブロックを各ページに配置 → どの窓口を使うべきかが一目で分かる",
         "G-4：ナビ末尾に「編集 のナビゲーション」が露出（編集者ビュー由来と見られ要確認） → デザイン変更ではなくSharePoint表示設定の確認事項としてF0（次ステップ）に回す",
@@ -571,53 +571,106 @@ def slide_cross():
 
 
 # ===========================================================================
-# Slide 10: 次ステップ
+# Slide 10: 次ステップ（1/2）— フェーズ計画
 # ===========================================================================
-def slide_next():
+def slide_next1():
     s = new_slide()
-    title_bar(s, "次ステップ", "フェーズ計画（F0〜F4）と社長判断3点（docs/02 §6）", badge="次アクション")
+    title_bar(s, "次ステップ（1/2）", "フェーズ計画（F0〜F4・各フェーズの完了条件）（docs/02 §6-1）", badge="次アクション")
 
     phases = [
-        ("F0", "テナント棚卸し", "M365 Copilot／Copilot Studio／SharePoint Premium／Power Platformのライセンス確認、SPFxカスタムコード許可可否、IT窓口特定", "ops-manager（社長経由でIT窓口）"),
-        ("F1", "要件定義", "課題→機能要件化、対象利用者・権限区分、AIスコープ確定", "ops-manager／marketer"),
-        ("F2", "SharePoint情報設計", "サイト構成・ナビ/IA・ページ設計・メタデータ列/コンテンツタイプ・権限方針・検索スキーマ方針", "engineer／designer"),
-        ("F3", "L1 PoC／MVP構築", "クイックウィン実装、ブランドライブラリ再構成、Microsoft Search+web part配置、Lists/Forms受付、メタデータ適用", "engineer"),
-        ("F4", "L2拡張（条件付き）", "F0結果に応じAI-6メタデータ自動付与／AI-2 Copilotアシスタント／AI-5申請自動化を段階投入", "engineer／qa-reviewer"),
+        ("F0", "テナント棚卸し", "M365 Copilot／Copilot Studio／SharePoint Premium／Power Platformのライセンス確認、SPFxカスタムコード許可可否、IT窓口特定",
+         "実行可能範囲(L1/L2/L3)確定", "ops-manager（社長経由でIT窓口）"),
+        ("F1", "要件定義", "課題→機能要件化、対象利用者・権限区分、AIスコープ確定",
+         "Must範囲を社長承認", "ops-manager／marketer"),
+        ("F2", "SharePoint情報設計", "サイト構成・ナビ/IA・ページ設計・メタデータ列/コンテンツタイプ・権限方針・検索スキーマ方針",
+         "設計レビュー通過", "engineer／designer"),
+        ("F3", "L1 PoC／MVP構築", "クイックウィン実装、ブランドライブラリ再構成、Microsoft Search+web part配置、Lists/Forms受付、メタデータ適用",
+         "B-1/G-2/CA-1のユーザー検証合格", "engineer"),
+        ("F4", "L2拡張（条件付き）", "F0結果に応じAI-6メタデータ自動付与／AI-2 Copilotアシスタント／AI-5申請自動化を段階投入",
+         "ライセンス承認済み機能のみ稼働", "engineer／qa-reviewer"),
     ]
     x = Inches(0.35)
     tw = Inches(2.44)
     y = Inches(1.15)
-    for i, (code, name, desc, owner) in enumerate(phases):
+    body_h = Inches(1.95)
+    for i, (code, name, desc, cond, owner) in enumerate(phases):
         cx = x + Emu(int(tw) * i)
-        fill = YELLOW if code == "F0" else LIGHTBG
         add_rect(s, cx, y, tw - Inches(0.06), Inches(0.42), fill=NAVY)
         add_text(s, cx, y, tw - Inches(0.06), Inches(0.42), f"{code}　{name}", size=10.5, bold=True, color=WHITE, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
-        add_rect(s, cx, y + Inches(0.42), tw - Inches(0.06), Inches(1.55), fill=RGBColor(0xFF,0xF7,0xE2) if code=="F0" else LIGHTBG, line_color=RGBColor(0xC7,0xCC,0xD1), line_w=0.75)
-        add_text(s, cx + Inches(0.08), y + Inches(0.5), tw - Inches(0.2), Inches(1.15), desc, size=8.2, color=DARKGRAY, line_spacing=1.05)
-        add_text(s, cx + Inches(0.08), y + Inches(1.72), tw - Inches(0.2), Inches(0.22), f"主担当: {owner}", size=7.3, color=MIDGRAY)
+        add_rect(s, cx, y + Inches(0.42), tw - Inches(0.06), body_h, fill=RGBColor(0xFF,0xF7,0xE2) if code=="F0" else LIGHTBG, line_color=RGBColor(0xC7,0xCC,0xD1), line_w=0.75)
+        add_text(s, cx + Inches(0.08), y + Inches(0.5), tw - Inches(0.2), Inches(0.98), desc, size=7.8, color=DARKGRAY, line_spacing=1.05)
+        add_text(s, cx + Inches(0.08), y + Inches(1.5), tw - Inches(0.2), Inches(0.4), f"完了条件：{cond}", size=7.3, bold=True, color=NAVY, line_spacing=1.05)
+        add_text(s, cx + Inches(0.08), y + Inches(2.12), tw - Inches(0.2), Inches(0.22), f"主担当: {owner}", size=7.3, color=MIDGRAY)
     for i in range(len(phases) - 1):
         cx = x + Emu(int(tw) * i)
         add_text(s, cx + tw - Inches(0.13), y + Inches(0.06), Inches(0.13), Inches(0.3), "→", size=13, bold=True,
                   color=YELLOW, align=PP_ALIGN.CENTER)
 
-    add_text(s, Inches(0.35), Inches(3.1), Inches(6), Inches(0.24), "F0はF1より先（何が作れるか未確定のまま設計に入らない）", size=9.5, italic=True, color=MIDGRAY)
+    note_y = y + Inches(0.42) + body_h + Inches(0.12)
+    add_text(s, Inches(0.35), note_y, Inches(12.6), Inches(0.24), "F0はF1より先（何が作れるか未確定のまま設計に入らない）", size=9.5, italic=True, color=MIDGRAY)
+    add_text(s, Inches(0.35), note_y + Inches(0.3), Inches(12.6), Inches(0.5),
+              "本計画は全22課題を同時実装するものではない。MVP（L1の4点）を軸に、同時着手可能な低コストのクイックウィン（CA-1／B-5・B-6／P-1〈要現物確認〉等）を並行し、"
+              "後続のL2/L3拡張（AI-1〜6等・要検証）はF0のライセンス確定後に段階投入する。", size=9, color=MIDGRAY, line_spacing=1.15)
 
-    add_text(s, Inches(0.35), Inches(3.55), Inches(6), Inches(0.26), "社長にご判断・ご確認いただきたい点（3点）", size=13, bold=True, color=NAVY)
+    footer(s, "次ステップ（1/2）")
+
+
+# ===========================================================================
+# Slide 11: 次ステップ（2/2）— 成功指標・セキュリティ・社長判断
+# ===========================================================================
+def slide_next2():
+    s = new_slide()
+    title_bar(s, "次ステップ（2/2）", "成功指標（KPI）／セキュリティ・権限ゲート／社長判断3点（docs/01 §6-2・docs/02 §6-2・§7）", badge="次アクション")
+
+    # 左カラム: 成功指標(KPI)
+    lx = Inches(0.35)
+    lw = Inches(6.1)
+    add_text(s, lx, Inches(1.0), lw, Inches(0.26), "成功指標（KPI）候補", size=13, bold=True, color=NAVY)
+    add_text(s, lx, Inches(1.28), lw, Inches(0.22), "測定方針：現状値取得 → 目標設定 → MVP後測定　（docs/01 §6-2）", size=9, italic=True, color=MIDGRAY)
+    kpis = [
+        "検索成功率・ゼロ件率（G-2の効果測定）",
+        "目的資料までのクリック数・所要時間（B-1／到達効率）",
+        "「資料が見つからない」問い合わせ件数（CA-1／メール検索代替の指標）",
+        "候補者資料の直リンク利用数（CA-1のクイックウィン効果測定）",
+        "モバイル到達率（T-1／B-7のモバイル対応効果測定）",
+    ]
+    add_multirun_bullet(s, lx, Inches(1.58), lw, Inches(1.9), kpis, size=9.6, gap_pt=8)
+
+    add_rect(s, lx, Inches(3.65), lw, Inches(0.85), fill=LIGHTBG, line_color=RGBColor(0xC7,0xCC,0xD1), line_w=0.75)
+    add_text(s, lx + Inches(0.12), Inches(3.73), lw - Inches(0.24), Inches(0.7),
+              "MVP稼働後、上記5指標について現状値を取得し目標値を設定、MVP実装後に再測定して効果を検証する（本資料はKPI候補の提示であり、目標値の確定は次フェーズで行う）。",
+              size=8.6, color=DARKGRAY, line_spacing=1.15)
+
+    # 右カラム: セキュリティ/権限ゲート
+    rx = Inches(6.7)
+    rw = Inches(6.3)
+    add_text(s, rx, Inches(1.0), rw, Inches(0.26), "セキュリティ／権限ゲート（F0・F2 必須）", size=13, bold=True, color=NAVY)
+    add_rect(s, rx, Inches(1.3), rw, Inches(1.55), fill=RGBColor(0xFB, 0xF3, 0xE8), line_color=RGBColor(0xB5,0x76,0x2A), line_w=1.0, dashed=True)
+    sec_items = [
+        "外部共有方針（クライアント配布PDF・会社案内等）の確定 — コミュニケーションサイトは既定オフを推奨（docs/02 §7）",
+        "機微／社外秘資料のライブラリ・権限分離 — ブランドライブラリ「注意事項」記載の営業秘密情報を含むため必須",
+        "AI検索／ナレッジ源に含める対象範囲の明示 — 権限設計（F2）がAI機能の前提。誤設計はAIの情報漏れに直結（docs/02 §7）",
+    ]
+    add_multirun_bullet(s, rx + Inches(0.12), Inches(1.4), rw - Inches(0.24), Inches(1.35), sec_items, size=8.6, gap_pt=5)
+    add_text(s, rx, Inches(2.95), rw, Inches(0.3), "→ F0（棚卸し）・F2（権限設計）の必須ゲート。可否・範囲は社長判断事項", size=8.8, bold=True, color=RGBColor(0x8a,0x55,0x18))
+
+    add_text(s, rx, Inches(3.35), rw, Inches(0.26), "社長にご判断・ご確認いただきたい点（3点）", size=13, bold=True, color=NAVY)
     decisions = [
         ("【要判断】", "MVPをL1の4点に絞って先行してよいか", "直リンク化(CA-1)＋ブランドライブラリ再構成(B-1/B-2)＋Microsoft Search(G-2)＋メタデータ設計の4点を先行する案。推奨：絞る"),
         ("【要確認】", "テナントのライセンス実態の確認（IT窓口の特定）", "M365 Copilot／Copilot Studio／SharePoint Premium／Power Platformプレミアムの保有・付与範囲。未確定だとAI6機能の可否が決まらない（最大のブロッカー）"),
         ("【要判断】", "クイックウィン（直リンク化・費用ゼロ・L1）をF0完了を待たず先行着手してよいか", ""),
     ]
-    dy = Inches(3.85)
+    dy = Inches(3.65)
     for tag, name, desc in decisions:
-        add_rect(s, Inches(0.35), dy, Inches(1.0), Inches(0.9 if desc else 0.4), fill=NAVY)
-        add_text(s, Inches(0.35), dy, Inches(1.0), Inches(0.9 if desc else 0.4), tag, size=9, bold=True, color=WHITE, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
-        add_text(s, Inches(1.45), dy, Inches(11.3), Inches(0.24), name, size=10.5, bold=True, color=DARKGRAY)
+        h = Inches(0.75) if desc else Inches(0.32)
+        add_rect(s, rx, dy, Inches(1.0), h, fill=NAVY)
+        add_text(s, rx, dy, Inches(1.0), h, tag, size=8.3, bold=True, color=WHITE, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        add_text(s, rx + Inches(1.1), dy, rw - Inches(1.1), Inches(0.22), name, size=8.8, bold=True, color=DARKGRAY, line_spacing=1.0)
         if desc:
-            add_text(s, Inches(1.45), dy + Inches(0.25), Inches(11.3), Inches(0.6), desc, size=8.8, color=MIDGRAY, line_spacing=1.1)
-        dy += Inches(0.9 if desc else 0.4) + Inches(0.12)
+            add_text(s, rx + Inches(1.1), dy + Inches(0.22), rw - Inches(1.1), Inches(0.5), desc, size=7.6, color=MIDGRAY, line_spacing=1.05)
+        dy += h + Inches(0.08)
 
-    footer(s, "次ステップ")
+    footer(s, "次ステップ（2/2）")
 
 
 if __name__ == "__main__":
@@ -630,6 +683,7 @@ if __name__ == "__main__":
     slide_candidate()
     slide_partner()
     slide_cross()
-    slide_next()
+    slide_next1()
+    slide_next2()
     prs.save(OUT_PATH)
     print("saved", OUT_PATH, "slides:", len(prs.slides.__iter__.__self__._sldIdLst))

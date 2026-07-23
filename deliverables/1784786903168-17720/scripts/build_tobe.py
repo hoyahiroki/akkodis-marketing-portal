@@ -79,9 +79,10 @@ def hero(title):
     return f'<div class="hero">{title}（ヒーロー・現状維持）</div>'
 
 
-def toc(items, part="[ページ内リンク／セクションアンカー web part]"):
+def toc(items, part="[ページ内リンク／セクションアンカー web part]", note=None):
     its = "".join(f'<div class="toc-item">{i}</div>' for i in items)
-    return f'''<div class="toc"><div class="blk-part">{part}</div><div class="toc-list">{its}</div></div>'''
+    note_html = f'<div class="blk-note">{note}</div>' if note else ""
+    return f'''<div class="toc"><div class="blk-part">{part}</div><div class="toc-list">{its}</div>{note_html}</div>'''
 
 
 def quicklinks(cards, part="[クイックリンク web part]", title=None):
@@ -156,8 +157,8 @@ def build_top():
             [("業務依頼フォーム", "（使い分けは今後定義）"), ("ブランドレビューの手順", "（使い分けは今後定義）")],
             title="「よく使う窓口」セクション（新設・T-4対応）"
         ) + textblk("テキストWebパーツ: 2つの使い分けを1行で説明（文言は今後定義）"),
-        block("「Webサイト流入分析」セクション：PC=現状の埋め込みダッシュボード維持", part="[埋め込みWebパーツ web part]",
-              note="SP表示のみ→ 主要指標サマリー＋「詳細はPCでご確認ください」に切替（T-1対応）", extra_class=""),
+        block("「Webサイト流入分析」セクション（現状の埋め込みダッシュボードは維持）", part="[埋め込みWebパーツ web part]",
+              note="端末別の表示切替可否はF0/PoCで検証。確実なL1案としてPC/SP共通で主要指標のテキスト要約＋詳細レポートへのリンクを併記（T-1対応）", extra_class=""),
         block("「組織体制」セクション（配置順は維持）", part="[組織図 web part]",
               note="目次アンカー「組織体制を見る」から直接ジャンプ可能に（T-2対応）"),
         footer(),
@@ -173,7 +174,8 @@ def build_brand_part1():
     blocks = [
         header(),
         hero("ブランドライブラリ"),
-        toc(["ブランドの使用について", "ガイドライン一覧", "ロゴ掲載申請", "フォント", "画像素材", "各種テンプレート", "SNSガイドライン"]),
+        toc(["ブランドの使用について", "ガイドライン一覧", "ロゴ掲載申請", "フォント", "画像素材", "各種テンプレート", "SNSガイドライン"],
+            note="項目数・粒度は案（ガイドライン棚卸し後に確定）"),
         block("「ブランドの使用について」：黄色マーカー3種→帯見出し1種類に統一（B-6対応）", part="[テキストWebパーツ]",
               note="「ブランドレビュー依頼の前にご確認ください」「注意事項（社外秘）」は折りたたみ可能ブロックに"),
         quicklinks(
@@ -181,7 +183,7 @@ def build_brand_part1():
             title="アイコンカード3枚にラベル追加（B-5対応）"
         ),
         library(
-            "「ガイドラインライブラリ」セクション（B-1／B-2の核心・最重要）",
+            "「ガイドラインライブラリ」セクション（B-1の核心・最重要／B-2は重要）",
             "[ドキュメントライブラリ web part] + [ハイライトされたコンテンツ web part]",
             ["メタ列: 種別", "言語", "版", "形式"],
             [
@@ -190,7 +192,7 @@ def build_brand_part1():
                 ("表記・用語", ["文字表記", "グローバル用語集", "ブランドボイス"]),
                 ("Akkodis Intelligence", ["ガイドライン", "Q&A"]),
             ],
-            note="既存10本を目的軸4カテゴリに束ね直し、ビュー切替でコンテンツタイプ別フィルタも可能に（B-2対応）"
+            note="既存10本を目的軸4カテゴリ（案・棚卸し後に確定）に束ね直し、ビュー切替でコンテンツタイプ別フィルタも可能に（B-2対応）"
         ),
     ]
     render("brand_1", blocks)
