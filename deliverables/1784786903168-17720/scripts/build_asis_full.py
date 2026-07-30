@@ -160,9 +160,19 @@ def build_top():
     box.paste(inset, (4, 4))
     dd.text((10, inset.height + 8), "SP版：T-1 埋め込みダッシュボード極小表示", fill=DARK, font=font(20))
 
-    canvas = Image.new("RGB", (im.width, im.height), WHITE)
+    # A1修正: 従来はヒーロー右上に重ね書きしており、T-3の赤枠（4カテゴリカード全体）の
+    # 4枚目「グローバルブランドパートナーシップ」を覆っていた。カードと重ならないよう、
+    # ページ下部余白（画像下に新たな帯を追加）にインセットを独立配置する。
+    pad_top = 30
+    canvas = Image.new("RGB", (im.width, im.height + box.height + pad_top * 2), WHITE)
     canvas.paste(im, (0, 0))
-    canvas.paste(box, (im.width - box.width - 20, 20))
+    inset_x = im.width - box.width - 40
+    inset_y = im.height + pad_top
+    canvas.paste(box, (inset_x, inset_y))
+    cd = ImageDraw.Draw(canvas)
+    cd.text((40, inset_y + box.height // 2 - 12),
+            "※SP版はスクロール別画面のため、右のインセットで参考表示（4カテゴリカードとは無関係）",
+            fill=DARK, font=font(22))
     im = canvas
 
     rows = [
@@ -183,9 +193,11 @@ def build_brand():
     items = [
         dict(xyxy=(160, 465, 1300, 945), number="B-6"),
         dict(xyxy=(155, 1108, 1310, 1310), number="B-5", badge="bl"),
-        dict(xyxy=(185, 1558, 1360, 1795), number="B-2", badge="tr"),
-        dict(xyxy=(190, 1558, 700, 1598), number="B-4", badge="bl"),
-        dict(xyxy=(173, 2317, 1130, 2435), number="B-3", badge="tr"),
+        # A2修正: 各枠は実測した本文行の外側に約8〜10pxのパディングを取り、
+        # バッジは本文が及ばない側（右余白）に逃がして文字にかからないようにする。
+        dict(xyxy=(172, 1546, 1200, 1842), number="B-2", badge="tr"),
+        dict(xyxy=(170, 1550, 650, 1600), number="B-4", badge="tr"),
+        dict(xyxy=(156, 2275, 1165, 2453), number="B-3", badge="tr"),
     ]
     annotate(im, items)
 
@@ -220,8 +232,10 @@ def build_client():
     im = open_src("client_pc.png")
     items = [
         dict(xyxy=(160, 415, 1020, 460), number="C-3", good=True),
-        dict(xyxy=(170, 2263, 1210, 2850), number="C-1", badge="tl"),
-        dict(xyxy=(200, 2295, 1180, 2333), number="C-2", badge="tr"),
+        # A2修正: 「お役立ち資料」見出し～30本超のリンク一覧の全体を8〜10pxパディングを
+        # 取って囲み、バッジは右余白（本文が届かない位置）に配置して見出し文字を隠さない。
+        dict(xyxy=(143, 2240, 1265, 3445), number="C-1", badge="tr"),
+        dict(xyxy=(172, 2281, 1226, 2352), number="C-2", badge="tr"),
     ]
     annotate(im, items)
     rows = [
@@ -241,8 +255,10 @@ def build_candidate():
     draw = ImageDraw.Draw(im)
     draw_box(draw, (70, 385, 1390, 1795), BLUE, halo_w=10, line_w=6)
     draw_badge(draw, (70, 385), "CA-2", BLUE, size=56)
-    draw_box(draw, (160, 1085, 1210, 1230), RED, halo_w=10, line_w=6)
-    draw_badge(draw, (1210, 1085), "CA-1", RED, size=56)
+    # A2修正: 枠線が見出し行「リクルーターカジュアル面談資料」に重なっていたため、
+    # 見出し・本文・3ブレット全体を約10〜15pxのパディングで囲む位置に変更。
+    draw_box(draw, (156, 1064, 1210, 1225), RED, halo_w=10, line_w=6)
+    draw_badge(draw, (1210, 1064), "CA-1", RED, size=56)
     rows = [
         ("CA-2", BLUE, "Good：5ページ中もっとも簡潔で見やすい構成（他ページの目標形にできる参照モデル）"),
         ("CA-1", RED, "マスター資料が「各チームに直接連絡」で完結し、資料そのものが入手できない"),
