@@ -338,6 +338,12 @@ r = table(
     ],
     heights=26, center_cols=(1, 5), status_col=1, header_h=20, zebra=False,
 )
+r = note_box(
+    ws, r, 1, LC,
+    "※ 解消14課題のうち B-7 と C-2 は、本構築の範囲では部分的な改善にとどまります。"
+    "抜本的な整理は次フェーズで扱います（各課題の期待効果は課題一覧を参照）。",
+    height=30, italic=True,
+)
 
 r += 1
 r = section_title(ws, r, 1, LC, "4. 優先着手すべき課題トップ3")
