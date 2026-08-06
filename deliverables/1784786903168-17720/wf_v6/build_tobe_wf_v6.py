@@ -234,7 +234,7 @@ def titlebar(name, idx, total):
 
 def header_band():
     """全ページ共通ヘッダー（セクション番号 0）。ラベルのみで注記帯は置かない。"""
-    return '''<div class="blk header">
+    return '''<div class="blk header" data-sec="0">
       <div class="numbadge">0</div>
       <div class="body headerband">
         <div class="row">
@@ -250,7 +250,7 @@ def header_band():
 
 
 def block(num, inner, extra_cls=""):
-    return f'''<div class="blk">
+    return f'''<div class="blk" data-sec="{num}">
       <div class="numbadge">{num}</div>
       <div class="body {extra_cls}">{inner}</div>
     </div>'''
@@ -269,7 +269,7 @@ def sec(num, title, parts, inner="", tone="", issue=""):
       <div class="title">{title}</div>
       {inner}
     </div>'''
-    return f'''<div class="blk">
+    return f'''<div class="blk" data-sec="{num}">
       <div class="numbadge">{num}</div>
       <div class="body">{body}</div>
     </div>'''
@@ -330,6 +330,10 @@ def ai1box():
     </div>'''
 
 
+# 測定結果（ページ名 -> {セクション番号: {"y":…, "h":…}}）。render() が書き込む。
+GEOM = {}
+
+
 def render(name, idx, page_label, blocks):
     css = CSS.replace("__WIDTH__", str(WIDTH))
     body = titlebar(page_label, idx, TOTAL_PAGES) + '<div class="page">' + "".join(blocks) + "</div>"
@@ -344,8 +348,29 @@ def render(name, idx, page_label, blocks):
         page.goto("file://" + html_path)
         page.wait_for_timeout(120)
         page.screenshot(path=png_path, full_page=True)
+        # スクリーンショットと同一のレンダリング条件のまま、各セクションブロックの
+        # 位置・高さを取得する。値は出力PNGの実ピクセル基準（device_scale_factor 適用後）。
+        geom = page.evaluate(
+            """(scale) => {
+              const out = {};
+              document.querySelectorAll('[data-sec]').forEach(el => {
+                const r = el.getBoundingClientRect();
+                out[el.getAttribute('data-sec')] = {
+                  y: Math.round((r.top + window.scrollY) * scale),
+                  h: Math.round(r.height * scale)
+                };
+              });
+              out['__img__'] = {
+                w: Math.round(document.documentElement.scrollWidth * scale),
+                h: Math.round(document.documentElement.scrollHeight * scale)
+              };
+              return out;
+            }""",
+            SCALE,
+        )
         b.close()
     os.remove(html_path)
+    GEOM[name] = geom
     print("saved", png_path)
     return png_path
 
@@ -821,11 +846,47 @@ COMMENTS = {
 
 
 def build_comments():
+    """コメント本文に、render() で実測したセクションの縦位置 y / 高さ h を合成して書き出す。
+
+    y / h は出力PNGの実ピクセル基準。Excel でWF画像の真横にコメント行を並べるための座標。
+    """
     path = os.path.join(OUT, "comments.json")
+    out = {}
+    for page, data in COMMENTS.items():
+        geom = GEOM.get(page, {})
+        img = geom.get("__img__")
+        page_out = {"page_title": data["page_title"]}
+        if img:
+            page_out["image_width"] = img["w"]
+            page_out["image_height"] = img["h"]
+        secs = []
+        for s in data["sections"]:
+            g = geom.get(str(s["no"]))
+            item = dict(s)
+            if g:
+                item["y"] = g["y"]
+                item["h"] = g["h"]
+            secs.append(item)
+        page_out["sections"] = secs
+        out[page] = page_out
+
     with open(path, "w", encoding="utf-8") as f:
-        json.dump(COMMENTS, f, ensure_ascii=False, indent=2)
+        json.dump(out, f, ensure_ascii=False, indent=2)
         f.write("\n")
     print("saved", path)
+
+    # --- 検証 -------------------------------------------------------------
+    for page, data in out.items():
+        ys = [s.get("y") for s in data["sections"]]
+        assert all(v is not None for v in ys), f"{page}: 座標の取れないセクションがある"
+        assert ys == sorted(ys), f"{page}: y が番号順に単調増加していない -> {ys}"
+        last = data["sections"][-1]
+        assert last["y"] + last["h"] <= data["image_height"], (
+            f"{page}: 最終セクションが画像高さを超えている "
+            f"({last['y'] + last['h']} > {data['image_height']})"
+        )
+        print(f"  OK {page}: {len(ys)} sections, image_height={data['image_height']}, "
+              f"last bottom={last['y'] + last['h']}")
     return path
 
 
